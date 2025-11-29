@@ -192,30 +192,16 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// ✅ Robust CORS setup
-const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_FRONTEND_URL];
-
-// Only add localhost URLs when in development
+// CORS setup
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  process.env.ADMIN_FRONTEND_URL
+];
 if (process.env.NODE_ENV !== 'production') {
   allowedOrigins.push('http://localhost:5173', 'http://localhost:5174');
 }
-
-// Apply CORS
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    credentials: true,
-  })
-);
+app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.options(/.*/, cors());
 
 //ye chatgpt wala locally fix hai
 // ✅ Safe CORS setup (production untouched)
