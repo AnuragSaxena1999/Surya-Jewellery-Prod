@@ -185,10 +185,10 @@ import Order from '../models/orderModel.js';
 import Setting from '../models/settingModel.js'; // Import the settings model
 
 // Initialize Razorpay instance
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// const razorpay = new Razorpay({
+//   key_id: process.env.RAZORPAY_KEY_ID,
+//   key_secret: process.env.RAZORPAY_KEY_SECRET,
+// });
 
 // @desc    Create new order
 // @route   POST /api/orders
