@@ -18,45 +18,144 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import signupImage from '../assets/login.webp';
 
 // ---- Styled Components ----
 
-const PageWrapper = styled(Box)({
+const PageContainer = styled(Box)({
+  display: 'flex',
   minHeight: "84vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "20px",
   background: "#ffffff",
 });
 
-const FormCard = styled(Box)({
-  width: "100%",
-  maxWidth: "450px",
-  background: "#fff",
-  padding: "30px 26px",
-  borderRadius: "16px",
-  boxShadow: "0px 4px 22px rgba(0,0,0,0.06)",
-  textAlign: "center",
-});
-
-const StyledInput = styled(TextField)({
-  marginTop: "18px",
-  "& .MuiOutlinedInput-root": {
-    borderRadius: "10px",
+const LeftPanel = styled(Box)({
+  flex: 1,
+  backgroundImage: `url(${signupImage})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundBlendMode: 'overlay',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '60px',
+  position: 'relative',
+  overflow: 'hidden',
+  '@media (max-width: 900px)': {
+    display: 'none',
   },
 });
 
-const SubmitButton = styled(Button)({
-  width: "100%",
-  height: "48px",
-  borderRadius: "10px",
-  marginTop: "25px",
-  background: "#121212",
-  color: "#fff",
+const RightPanel = styled(Box)({
+  flex: 1,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '10px',
+  '@media (max-width: 900px)': {
+    padding: '24px 18px',
+    flex: 'none',
+    width: '100%',
+    minHeight: '100vh',
+    justifyContent: 'flex-start',
+    gap: '20px',
+  },
+});
+
+const FormContainer = styled(Box)({
+  width: '100%',
+  maxWidth: '420px',
+  '@media (max-width: 900px)': {
+    maxWidth: '360px',
+    background: '#ffffff',
+    padding: '24px 20px',
+    borderRadius: '12px',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.07)',
+  },
+});
+
+const Title = styled(Typography)({
+  fontSize: '2rem',
+  fontWeight: 700,
+  color: '#1a1a1a',
+  marginBottom: '8px',
+  '@media (max-width: 900px)': {
+    textAlign: 'center',
+    fontSize: '1.7rem',
+  },
+});
+
+const Subtitle = styled(Typography)({
+  fontSize: '0.95rem',
+  color: '#666',
+  marginBottom: '32px',
+  '@media (max-width: 900px)': {
+    textAlign: 'center',
+    marginBottom: '20px',
+  },
+});
+
+const StyledTextField = styled(TextField)({
+  marginBottom: '20px',
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '8px',
+    backgroundColor: '#fff',
+    transition: 'all 0.2s ease',
+    '& fieldset': {
+      borderColor: '#e0e0e0',
+      borderWidth: '1.5px',
+    },
+    '&:hover fieldset': {
+      borderColor: '#bdbdbd',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#1a1a1a',
+      borderWidth: '2px',
+    },
+  },
+  '@media (max-width: 900px)': {
+    '& input': {
+      padding: '12px 14px',
+      fontSize: '0.9rem',
+    },
+  },
+});
+
+const LoginButton = styled(Button)({
+  marginTop: '8px',
+  padding: '14px',
+  borderRadius: '8px',
+  fontSize: '0.95rem',
   fontWeight: 600,
-  "&:hover": {
-    background: "#1d1d1d",
+  backgroundColor: '#1a1a1a',
+  color: '#fff',
+  textTransform: 'none',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    backgroundColor: '#2d2d2d',
+  },
+  '@media (max-width: 900px)': {
+    fontSize: '1rem',
+    borderRadius: '12px',
+  },
+});
+
+const StyledDivider = styled(Divider)({
+  margin: '32px 0',
+  '@media (max-width: 900px)': {
+    margin: '24px 0',
+  },
+});
+
+const RegisterLink = styled(Link)({
+  color: '#1a1a1a',
+  fontWeight: 600,
+  textDecoration: 'none',
+  borderBottom: '1px solid transparent',
+  '&:hover': {
+    borderBottomColor: '#1a1a1a',
   },
 });
 
@@ -108,56 +207,53 @@ const LoginPage = () => {
   };
 
   return (
-    <PageWrapper>
-      <FormCard>
-        <Typography variant="h5" fontWeight={700}>
-          Sign in
-        </Typography>
+    <PageContainer>
+      <LeftPanel />
 
-        <Typography sx={{ color: "#666", mt: 1 }}>
-          Welcome back — please login to continue
-        </Typography>
+      <RightPanel>
+        <FormContainer>
+          <Title>Sign in</Title>
+          <Subtitle>Welcome back — please login to continue</Subtitle>
 
-        {apiError && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {apiError}
-          </Alert>
-        )}
+          {apiError && (
+            <Alert severity="error" sx={{ mb: 3 }}>
+              {apiError}
+            </Alert>
+          )}
 
-        <form onSubmit={submitHandler}>
-          <StyledInput
-            fullWidth
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!errors.email}
-            helperText={errors.email}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <EmailOutlinedIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Box component="form" onSubmit={submitHandler} noValidate>
+            <StyledTextField
+              fullWidth
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={!!errors.email}
+              helperText={errors.email}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <EmailOutlinedIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
 
-          <StyledInput
-            fullWidth
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={!!errors.password}
-            helperText={errors.password}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockOutlinedIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
+            <StyledTextField
+              fullWidth
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={!!errors.password}
+              helperText={errors.password}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LockOutlinedIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
                   <IconButton onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? (
                       <VisibilityOffOutlinedIcon />
@@ -165,29 +261,26 @@ const LoginPage = () => {
                       <VisibilityOutlinedIcon />
                     )}
                   </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+                ),
+              }}
+            />
 
-          <SubmitButton type="submit" disabled={loading}>
-            {loading ? <CircularProgress size={22} sx={{ color: "#fff" }} /> : "Sign in"}
-          </SubmitButton>
-        </form>
+            <LoginButton type="submit" fullWidth disabled={loading}>
+              {loading ? <CircularProgress size={22} sx={{ color: "#fff" }} /> : "Sign in"}
+            </LoginButton>
 
-        <Divider sx={{ my: 3 }}>or</Divider>
+            <StyledDivider>or</StyledDivider>
 
-        <Typography sx={{ fontSize: "15px" }}>
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            style={{ textDecoration: "none", fontWeight: 600, color: "#000" }}
-          >
-            Create account
-          </Link>
-        </Typography>
-      </FormCard>
-    </PageWrapper>
+            <Typography align="center">
+              Don't have an account?{" "}
+              <RegisterLink to="/register">
+                Create account
+              </RegisterLink>
+            </Typography>
+          </Box>
+        </FormContainer>
+      </RightPanel>
+    </PageContainer>
   );
 };
 
