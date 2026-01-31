@@ -184,6 +184,16 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 const app = express();
 const __dirname = path.resolve();
 
+/* ✅ HEALTH CHECK (MUST BE FIRST, NO DB, NO MIDDLEWARE DEPENDENCY) */
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+app.head('/health', (req, res) => {
+  res.sendStatus(200);
+});
+
+
 // Middlewares
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json());
@@ -250,9 +260,9 @@ app.options(/.*/, cors());
     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
     // ✅ HEALTH CHECK API
-    app.get('/health', (req, res) => {
-      res.status(200).send('Server is alive');
-    });
+    // app.get('/health', (req, res) => {
+    //   res.status(200).send('Server is alive');
+    // });
 
     if (process.env.NODE_ENV === 'production') {
       // --- Admin Frontend ---
