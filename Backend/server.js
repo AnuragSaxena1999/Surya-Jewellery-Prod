@@ -249,6 +249,11 @@ app.options(/.*/, cors());
     // Serve uploads folder
     app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
+    // ✅ HEALTH CHECK API
+    app.get('/health', (req, res) => {
+      res.status(200).send('Server is alive');
+    });
+
     if (process.env.NODE_ENV === 'production') {
       // --- Admin Frontend ---
       app.use('/admin', express.static(path.join(__dirname, 'frontend-admin', 'dist')));
